@@ -1,0 +1,163 @@
+<html>
+<head>
+</head>
+<body >
+<table style="text-align:center;color:white;width:70%;margin-left:15%;margin-right:15%;margin-top:15%" id="board">
+<tr>
+<td style="background-color:green;width:50px;height:50px;" id="11"></td>
+<td style="background-color:green;width:50px;height:50px;" id="12"></td>
+<td style="background-color:green;width:50px;height:50px;" id="13"></td>
+<td style="background-color:green;width:50px;height:50px;" id="14"></td>
+</tr>
+
+<tr>
+<td style="background-color:green;width:50px;height:50px;" id="21"></td>
+<td style="background-color:green;width:50px;height:50px;" id="22"></td>
+<td style="background-color:green;width:50px;height:50px;" id="23"></td>
+<td style="background-color:green;width:50px;height:50px;" id="24"></td>
+</tr>
+
+<tr>
+<td style="background-color:green;width:50px;height:50px;" id="31"></td>
+<td style="background-color:green;width:50px;height:50px;" id="32"></td>
+<td style="background-color:green;width:50px;height:50px;" id="33"></td>
+<td style="background-color:green;width:50px;height:50px;" id="34"></td>
+</tr>
+
+<tr>
+<td style="background-color:green;width:50px;height:50px;" id="41"></td>
+<td style="background-color:green;width:50px;height:50px;" id="42"></td>
+<td style="background-color:green;width:50px;height:50px;" id="43"></td>
+<td style="background-color:green;width:50px;height:50px;" id="44"></td>
+</tr>
+</table>
+<script type="text/javascript">
+var boardArray;
+var maxRow = 4;
+var minRow = 1;
+
+var maxCol = 4;
+var minCol = 1;
+
+var randomEmptyRow =Math.floor(Math.random() * (+maxRow - +minRow)) + +minRow;
+var randomEmptyCol =Math.floor(Math.random() * (+maxCol - +minCol)) + +minCol;
+
+//alert(String(randomEmptyRow) + String(randomEmptyCol));
+//alert(document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)));
+document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)).style.backgroundColor  = "white";
+
+var index = 0;
+var min = 0;
+var max = 15;
+var chosenNumbers = [];
+var row = 1;
+var column = 1;
+var numbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+//var userNumbers = [];
+while(index<15) {
+var random = Math.floor(Math.random() * (+(numbers.length-1) - +min)) + +min;
+if(row == randomEmptyRow && column == randomEmptyCol){
+	//continue;
+}
+else {
+	document.getElementById(String(row) + String(column)).innerHTML = numbers[random];
+	//userNumbers.push(numbers[random]);
+	numbers.splice(random,1);
+	index++;
+}
+if(column % 4 === 0) {
+	row++;
+	column = 1;
+}
+else {
+	column++;
+}
+}
+
+document.onkeydown = function() {
+    switch (window.event.keyCode) {
+        case 37: // Left
+         Left();
+        break;
+        case 38: // UP
+         Up();
+        break;
+        case 39: // Right
+		 Right();
+        break;
+        case 40: // Down
+		 Down();
+        break;
+    }
+	if(isSorted()) {
+		alert("congratulations!! you made it :)");
+		document.location.href = document.location.href;
+	}
+};
+
+function Left(){
+	if(randomEmptyCol == 4) 
+		return;
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol + 1)).style.backgroundColor = "white";
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)).style.backgroundColor = "green";
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)).innerHTML = document.getElementById(String(randomEmptyRow) + String(randomEmptyCol + 1)).innerHTML;
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol + 1)).innerHTML = "";
+	
+	randomEmptyCol++;
+}
+
+function Up(){
+	if(randomEmptyRow == 4) 
+		return;
+	document.getElementById(String(randomEmptyRow + 1) + String(randomEmptyCol)).style.backgroundColor = "white";
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)).style.backgroundColor = "green";
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)).innerHTML = document.getElementById(String(randomEmptyRow + 1) + String(randomEmptyCol)).innerHTML;
+	document.getElementById(String(randomEmptyRow + 1) + String(randomEmptyCol)).innerHTML = "";
+	
+	randomEmptyRow++;
+}
+
+function Right(){
+	if(randomEmptyCol == 1) 
+		return;
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol - 1)).style.backgroundColor = "white";
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)).style.backgroundColor = "green";
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)).innerHTML = document.getElementById(String(randomEmptyRow) + String(randomEmptyCol - 1)).innerHTML;
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol - 1)).innerHTML = "";
+	
+	randomEmptyCol--;
+}
+
+function Down(){
+	if(randomEmptyRow == 1) 
+		return;
+	document.getElementById(String(randomEmptyRow - 1) + String(randomEmptyCol)).style.backgroundColor = "white";
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)).style.backgroundColor = "green";
+	document.getElementById(String(randomEmptyRow) + String(randomEmptyCol)).innerHTML = document.getElementById(String(randomEmptyRow - 1) + String(randomEmptyCol)).innerHTML;
+	document.getElementById(String(randomEmptyRow - 1) + String(randomEmptyCol)).innerHTML = "";
+	
+	randomEmptyRow--;
+}
+
+function isSorted(){
+var userNumbers = [];
+for(var i=1;i<5;i++) {
+	for(var j=1;j<5;j++) {
+		if(document.getElementById(String(i) + String(j)).style.backgroundColor === "white")
+			continue;
+		userNumbers.push(document.getElementById(String(i) + String(j)).innerHTML);
+	}
+}
+var result = true;
+for(var i=0;i<userNumbers.length - 1;i++) {
+if(parseInt(userNumbers[i]) > parseInt(userNumbers[i+1])){
+result = false;
+break;
+}
+}
+
+return result;
+}
+</script>
+</body>
+</html>
